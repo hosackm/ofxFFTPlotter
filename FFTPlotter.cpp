@@ -47,26 +47,43 @@ void FFTPlotter::addSamples(const float *input, const int bufferSize, const int 
 }
 
 void FFTPlotter::draw(const unsigned x, const unsigned y, const unsigned w, const unsigned h){
-    ofDrawBitmapString("Draw is being called", 10, 10);
-    
+    /* Store Graphics */
     ofPushStyle();
     ofPushMatrix();
-
-    ofTranslate(x, y, 0);
     
+    /* Make drawing relative to x/y input parameters */
+    ofTranslate(x, y);
+    
+    /* Calculate width of bins */
     int nBins = fftlength / 2 + 1;
-    float binWidth = w / (float)nBins;
+    float binWidth = (float)w / (float)nBins;
     
+    /* Decide maximum y axis value */
+    float ylimit = 100.0;
+    
+    /* Cool Color */
     ofSetColor(20, 255, 20);
     
-    double mag;
+    /* temp drawing variables */
+    double mag, hdraw, ydraw;
     for (int i = 0; i < nBins; ++i) {
         mag = bins[i];
-        ofRect(binWidth * i, h - (mag / 100.), binWidth, mag / 100. * h);
+        
+        /* Height to draw our rectangle with (don't let it go negative) */
+        hdraw = h / ylimit * mag;
+        hdraw = hdraw < 0.0f ? 0.0f : hdraw;
+        
+        /* Y location to start rectangle at */
+        ydraw = h - hdraw;
+        
+        /* Draw the rectangle */
+        ofRect(i * binWidth, ydraw, binWidth, hdraw);
     }
-
+    
+    /* Pop Graphics */
     ofPopStyle();
     ofPopMatrix();
+
 }
 
 void FFTPlotter::setLength(unsigned int n)

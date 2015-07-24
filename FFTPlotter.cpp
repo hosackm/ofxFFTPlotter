@@ -59,7 +59,7 @@ void FFTPlotter::draw(const unsigned x, const unsigned y, const unsigned w, cons
     float binWidth = (float)w / (float)nBins;
     
     /* Decide maximum y axis value */
-    float ylimit = 100.0;
+    float ylimit = 70.0;
     
     /* Cool Color */
     ofSetColor(20, 255, 20);
@@ -94,7 +94,7 @@ void FFTPlotter::setLength(unsigned int n)
 void FFTPlotter::processFFT(){
     /* Window off samples and run fftw */
     this->processHanning();
-    fftw_execute(plan);
+    fftw_execute(this->plan);
     
     /* Convert to magnitude */
     double real, imag;
